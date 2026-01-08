@@ -1,0 +1,19 @@
+{
+  "$schema": "https://nitro.margelo.com/nitro.schema.json",
+  "cxxNamespace": [
+    "keyboard"
+  ],
+  "ios": {
+    "iosModuleName": "NitroKeyboard"
+  },
+  "android": {
+    "androidNamespace": [
+      "keyboard"
+    ],
+    "androidCxxLibName": "NitroKeyboard"
+  },
+  "autolinking": {},
+  "ignorePaths": [
+    "**/node_modules"
+  ]
+}
