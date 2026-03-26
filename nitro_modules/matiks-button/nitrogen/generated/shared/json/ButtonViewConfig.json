@@ -1,0 +1,11 @@
+{
+  "uiViewClassName": "ButtonView",
+  "supportsRawText": false,
+  "bubblingEventTypes": {},
+  "directEventTypes": {},
+  "validAttributes": {
+    "title": true,
+    "onPress": true,
+    "hybridRef": true
+  }
+}

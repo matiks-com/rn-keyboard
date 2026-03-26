@@ -155,7 +155,15 @@ android {
 dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
-
+    implementation(project(':matiks-button')) {
+        exclude group: 'com.facebook.react'
+    }
+    implementation(project(':rn-keyboard')) {
+        exclude group: 'com.facebook.react'
+    }
+    implementation(project(':rn-stroke-text')) {
+        exclude group: 'com.facebook.react'
+    }
     def isGifEnabled = (findProperty('expo.gif.enabled') ?: "") == "true";
     def isWebpEnabled = (findProperty('expo.webp.enabled') ?: "") == "true";
     def isWebpAnimatedEnabled = (findProperty('expo.webp.animated') ?: "") == "true";

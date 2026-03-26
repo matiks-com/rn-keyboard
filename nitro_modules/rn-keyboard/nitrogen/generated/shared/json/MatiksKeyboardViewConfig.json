@@ -1,0 +1,14 @@
+{
+  "uiViewClassName": "MatiksKeyboardView",
+  "supportsRawText": false,
+  "bubblingEventTypes": {},
+  "directEventTypes": {},
+  "validAttributes": {
+    "customKeyboardType": true,
+    "keyboardLayout": true,
+    "onKeyInput": true,
+    "onDelete": true,
+    "hapticsEnabled": true,
+    "hybridRef": true
+  }
+}

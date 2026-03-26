@@ -37,3 +37,10 @@ expoAutolinking.useExpoVersionCatalog()
 
 include ':app'
 includeBuild(expoAutolinking.reactNativeGradlePlugin)
+
+include ':matiks-button'
+project(':matiks-button').projectDir = new File(rootProject.projectDir, '../node_modules/matiks-button/android')
+include ':rn-keyboard'
+project(':rn-keyboard').projectDir = new File(rootProject.projectDir, '../node_modules/rn-keyboard/android')
+include ':rn-stroke-text'
+project(':rn-stroke-text').projectDir = new File(rootProject.projectDir, '../nitro_modules/rn-stroke-text/android')

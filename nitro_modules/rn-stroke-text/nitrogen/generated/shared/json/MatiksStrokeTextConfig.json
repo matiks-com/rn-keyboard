@@ -1,0 +1,19 @@
+{
+  "uiViewClassName": "MatiksStrokeText",
+  "supportsRawText": false,
+  "bubblingEventTypes": {},
+  "directEventTypes": {},
+  "validAttributes": {
+    "width": true,
+    "text": true,
+    "fontSize": true,
+    "color": true,
+    "strokeColor": true,
+    "strokeWidth": true,
+    "fontFamily": true,
+    "align": true,
+    "numberOfLines": true,
+    "ellipsis": true,
+    "hybridRef": true
+  }
+}

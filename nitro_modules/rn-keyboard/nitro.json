@@ -1,0 +1,24 @@
+{
+  "$schema": "https://nitro.margelo.com/nitro.schema.json",
+  "cxxNamespace": [
+    "rnkeyboard"
+  ],
+  "ios": {
+    "iosModuleName": "NitroRnKeyboard"
+  },
+  "android": {
+    "androidNamespace": [
+      "rnkeyboard"
+    ],
+    "androidCxxLibName": "NitroRnKeyboard"
+  },
+  "autolinking": {
+    "MatiksKeyboardView": {
+      "swift": "HybridMatiksKeyboardView",
+      "kotlin": "HybridMatiksKeyboardView"
+    }
+  },
+  "ignorePaths": [
+    "**/node_modules"
+  ]
+}
