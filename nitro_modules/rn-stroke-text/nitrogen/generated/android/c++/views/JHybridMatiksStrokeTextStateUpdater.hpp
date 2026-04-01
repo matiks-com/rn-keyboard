@@ -12,8 +12,8 @@
 #endif
 
 #include <fbjni/fbjni.h>
-#include <react/fabric/StateWrapperImpl.h>
 #include <react/fabric/CoreComponentsRegistry.h>
+#include <react/fabric/StateWrapperImpl.h>
 #include <react/renderer/core/ConcreteComponentDescriptor.h>
 #include <NitroModules/NitroDefines.hpp>
 #include <NitroModules/JStateWrapper.hpp>
@@ -24,13 +24,13 @@ namespace margelo::nitro::rnstroketext::views {
 
 using namespace facebook;
 
-class JHybridMatiksStrokeTextStateUpdater: public jni::JavaClass<JHybridMatiksStrokeTextStateUpdater> {
+class JHybridMatiksStrokeTextStateUpdater final: public jni::JavaClass<JHybridMatiksStrokeTextStateUpdater> {
 public:
   static constexpr auto kJavaDescriptor = "Lcom/margelo/nitro/rnstroketext/views/HybridMatiksStrokeTextStateUpdater;";
 
 public:
   static void updateViewProps(jni::alias_ref<jni::JClass> /* class */,
-                              jni::alias_ref<JHybridMatiksStrokeTextSpec::javaobject> view,
+                              jni::alias_ref<JHybridMatiksStrokeTextSpec::JavaPart> view,
                               jni::alias_ref<JStateWrapper::javaobject> stateWrapperInterface);
 
 public:

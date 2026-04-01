@@ -21,134 +21,128 @@ namespace margelo::nitro::rnstroketext { struct Dimensions; }
 
 namespace margelo::nitro::rnstroketext {
 
-  jni::local_ref<JHybridMatiksStrokeTextSpec::jhybriddata> JHybridMatiksStrokeTextSpec::initHybrid(jni::alias_ref<jhybridobject> jThis) {
+  std::shared_ptr<JHybridMatiksStrokeTextSpec> JHybridMatiksStrokeTextSpec::JavaPart::getJHybridMatiksStrokeTextSpec() {
+    auto hybridObject = JHybridObject::JavaPart::getJHybridObject();
+    auto castHybridObject = std::dynamic_pointer_cast<JHybridMatiksStrokeTextSpec>(hybridObject);
+    if (castHybridObject == nullptr) [[unlikely]] {
+      throw std::runtime_error("Failed to downcast JHybridObject to JHybridMatiksStrokeTextSpec!");
+    }
+    return castHybridObject;
+  }
+
+  jni::local_ref<JHybridMatiksStrokeTextSpec::CxxPart::jhybriddata> JHybridMatiksStrokeTextSpec::CxxPart::initHybrid(jni::alias_ref<jhybridobject> jThis) {
     return makeCxxInstance(jThis);
   }
 
-  void JHybridMatiksStrokeTextSpec::registerNatives() {
-    registerHybrid({
-      makeNativeMethod("initHybrid", JHybridMatiksStrokeTextSpec::initHybrid),
-    });
-  }
-
-  size_t JHybridMatiksStrokeTextSpec::getExternalMemorySize() noexcept {
-    static const auto method = javaClassStatic()->getMethod<jlong()>("getMemorySize");
-    return method(_javaPart);
-  }
-
-  bool JHybridMatiksStrokeTextSpec::equals(const std::shared_ptr<HybridObject>& other) {
-    if (auto otherCast = std::dynamic_pointer_cast<JHybridMatiksStrokeTextSpec>(other)) {
-      return _javaPart == otherCast->_javaPart;
+  std::shared_ptr<JHybridObject> JHybridMatiksStrokeTextSpec::CxxPart::createHybridObject(const jni::local_ref<JHybridObject::JavaPart>& javaPart) {
+    auto castJavaPart = jni::dynamic_ref_cast<JHybridMatiksStrokeTextSpec::JavaPart>(javaPart);
+    if (castJavaPart == nullptr) [[unlikely]] {
+      throw std::runtime_error("Failed to cast JHybridObject::JavaPart to JHybridMatiksStrokeTextSpec::JavaPart!");
     }
-    return false;
+    return std::make_shared<JHybridMatiksStrokeTextSpec>(castJavaPart);
   }
 
-  void JHybridMatiksStrokeTextSpec::dispose() noexcept {
-    static const auto method = javaClassStatic()->getMethod<void()>("dispose");
-    method(_javaPart);
-  }
-
-  std::string JHybridMatiksStrokeTextSpec::toString() {
-    static const auto method = javaClassStatic()->getMethod<jni::JString()>("toString");
-    auto javaString = method(_javaPart);
-    return javaString->toStdString();
+  void JHybridMatiksStrokeTextSpec::CxxPart::registerNatives() {
+    registerHybrid({
+      makeNativeMethod("initHybrid", JHybridMatiksStrokeTextSpec::CxxPart::initHybrid),
+    });
   }
 
   // Properties
   std::optional<double> JHybridMatiksStrokeTextSpec::getWidth() {
-    static const auto method = javaClassStatic()->getMethod<jni::local_ref<jni::JDouble>()>("getWidth");
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JDouble>()>("getWidth");
     auto __result = method(_javaPart);
     return __result != nullptr ? std::make_optional(__result->value()) : std::nullopt;
   }
   void JHybridMatiksStrokeTextSpec::setWidth(std::optional<double> width) {
-    static const auto method = javaClassStatic()->getMethod<void(jni::alias_ref<jni::JDouble> /* width */)>("setWidth");
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JDouble> /* width */)>("setWidth");
     method(_javaPart, width.has_value() ? jni::JDouble::valueOf(width.value()) : nullptr);
   }
   std::string JHybridMatiksStrokeTextSpec::getText() {
-    static const auto method = javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getText");
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getText");
     auto __result = method(_javaPart);
     return __result->toStdString();
   }
   void JHybridMatiksStrokeTextSpec::setText(const std::string& text) {
-    static const auto method = javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* text */)>("setText");
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* text */)>("setText");
     method(_javaPart, jni::make_jstring(text));
   }
   std::optional<double> JHybridMatiksStrokeTextSpec::getFontSize() {
-    static const auto method = javaClassStatic()->getMethod<jni::local_ref<jni::JDouble>()>("getFontSize");
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JDouble>()>("getFontSize");
     auto __result = method(_javaPart);
     return __result != nullptr ? std::make_optional(__result->value()) : std::nullopt;
   }
   void JHybridMatiksStrokeTextSpec::setFontSize(std::optional<double> fontSize) {
-    static const auto method = javaClassStatic()->getMethod<void(jni::alias_ref<jni::JDouble> /* fontSize */)>("setFontSize");
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JDouble> /* fontSize */)>("setFontSize");
     method(_javaPart, fontSize.has_value() ? jni::JDouble::valueOf(fontSize.value()) : nullptr);
   }
   std::optional<std::string> JHybridMatiksStrokeTextSpec::getColor() {
-    static const auto method = javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getColor");
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getColor");
     auto __result = method(_javaPart);
     return __result != nullptr ? std::make_optional(__result->toStdString()) : std::nullopt;
   }
   void JHybridMatiksStrokeTextSpec::setColor(const std::optional<std::string>& color) {
-    static const auto method = javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* color */)>("setColor");
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* color */)>("setColor");
     method(_javaPart, color.has_value() ? jni::make_jstring(color.value()) : nullptr);
   }
   std::optional<std::string> JHybridMatiksStrokeTextSpec::getStrokeColor() {
-    static const auto method = javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getStrokeColor");
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getStrokeColor");
     auto __result = method(_javaPart);
     return __result != nullptr ? std::make_optional(__result->toStdString()) : std::nullopt;
   }
   void JHybridMatiksStrokeTextSpec::setStrokeColor(const std::optional<std::string>& strokeColor) {
-    static const auto method = javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* strokeColor */)>("setStrokeColor");
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* strokeColor */)>("setStrokeColor");
     method(_javaPart, strokeColor.has_value() ? jni::make_jstring(strokeColor.value()) : nullptr);
   }
   std::optional<double> JHybridMatiksStrokeTextSpec::getStrokeWidth() {
-    static const auto method = javaClassStatic()->getMethod<jni::local_ref<jni::JDouble>()>("getStrokeWidth");
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JDouble>()>("getStrokeWidth");
     auto __result = method(_javaPart);
     return __result != nullptr ? std::make_optional(__result->value()) : std::nullopt;
   }
   void JHybridMatiksStrokeTextSpec::setStrokeWidth(std::optional<double> strokeWidth) {
-    static const auto method = javaClassStatic()->getMethod<void(jni::alias_ref<jni::JDouble> /* strokeWidth */)>("setStrokeWidth");
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JDouble> /* strokeWidth */)>("setStrokeWidth");
     method(_javaPart, strokeWidth.has_value() ? jni::JDouble::valueOf(strokeWidth.value()) : nullptr);
   }
   std::optional<std::string> JHybridMatiksStrokeTextSpec::getFontFamily() {
-    static const auto method = javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getFontFamily");
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JString>()>("getFontFamily");
     auto __result = method(_javaPart);
     return __result != nullptr ? std::make_optional(__result->toStdString()) : std::nullopt;
   }
   void JHybridMatiksStrokeTextSpec::setFontFamily(const std::optional<std::string>& fontFamily) {
-    static const auto method = javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* fontFamily */)>("setFontFamily");
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JString> /* fontFamily */)>("setFontFamily");
     method(_javaPart, fontFamily.has_value() ? jni::make_jstring(fontFamily.value()) : nullptr);
   }
   std::optional<TextAlign> JHybridMatiksStrokeTextSpec::getAlign() {
-    static const auto method = javaClassStatic()->getMethod<jni::local_ref<JTextAlign>()>("getAlign");
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<JTextAlign>()>("getAlign");
     auto __result = method(_javaPart);
     return __result != nullptr ? std::make_optional(__result->toCpp()) : std::nullopt;
   }
   void JHybridMatiksStrokeTextSpec::setAlign(std::optional<TextAlign> align) {
-    static const auto method = javaClassStatic()->getMethod<void(jni::alias_ref<JTextAlign> /* align */)>("setAlign");
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<JTextAlign> /* align */)>("setAlign");
     method(_javaPart, align.has_value() ? JTextAlign::fromCpp(align.value()) : nullptr);
   }
   std::optional<double> JHybridMatiksStrokeTextSpec::getNumberOfLines() {
-    static const auto method = javaClassStatic()->getMethod<jni::local_ref<jni::JDouble>()>("getNumberOfLines");
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JDouble>()>("getNumberOfLines");
     auto __result = method(_javaPart);
     return __result != nullptr ? std::make_optional(__result->value()) : std::nullopt;
   }
   void JHybridMatiksStrokeTextSpec::setNumberOfLines(std::optional<double> numberOfLines) {
-    static const auto method = javaClassStatic()->getMethod<void(jni::alias_ref<jni::JDouble> /* numberOfLines */)>("setNumberOfLines");
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JDouble> /* numberOfLines */)>("setNumberOfLines");
     method(_javaPart, numberOfLines.has_value() ? jni::JDouble::valueOf(numberOfLines.value()) : nullptr);
   }
   std::optional<bool> JHybridMatiksStrokeTextSpec::getEllipsis() {
-    static const auto method = javaClassStatic()->getMethod<jni::local_ref<jni::JBoolean>()>("getEllipsis");
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JBoolean>()>("getEllipsis");
     auto __result = method(_javaPart);
     return __result != nullptr ? std::make_optional(static_cast<bool>(__result->value())) : std::nullopt;
   }
   void JHybridMatiksStrokeTextSpec::setEllipsis(std::optional<bool> ellipsis) {
-    static const auto method = javaClassStatic()->getMethod<void(jni::alias_ref<jni::JBoolean> /* ellipsis */)>("setEllipsis");
+    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JBoolean> /* ellipsis */)>("setEllipsis");
     method(_javaPart, ellipsis.has_value() ? jni::JBoolean::valueOf(ellipsis.value()) : nullptr);
   }
 
   // Methods
   Dimensions JHybridMatiksStrokeTextSpec::measureDimensions() {
-    static const auto method = javaClassStatic()->getMethod<jni::local_ref<JDimensions>()>("measureDimensions");
+    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<JDimensions>()>("measureDimensions");
     auto __result = method(_javaPart);
     return __result->toCpp();
   }

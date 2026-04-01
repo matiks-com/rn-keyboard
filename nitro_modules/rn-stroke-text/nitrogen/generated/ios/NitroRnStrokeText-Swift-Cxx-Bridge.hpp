@@ -47,7 +47,7 @@ namespace margelo::nitro::rnstroketext::bridge::swift {
     return optional.has_value();
   }
   inline double get_std__optional_double_(const std::optional<double>& optional) noexcept {
-    return *optional;
+    return optional.value();
   }
   
   // pragma MARK: std::optional<std::string>
@@ -62,7 +62,7 @@ namespace margelo::nitro::rnstroketext::bridge::swift {
     return optional.has_value();
   }
   inline std::string get_std__optional_std__string_(const std::optional<std::string>& optional) noexcept {
-    return *optional;
+    return optional.value();
   }
   
   // pragma MARK: std::optional<TextAlign>
@@ -77,7 +77,7 @@ namespace margelo::nitro::rnstroketext::bridge::swift {
     return optional.has_value();
   }
   inline TextAlign get_std__optional_TextAlign_(const std::optional<TextAlign>& optional) noexcept {
-    return *optional;
+    return optional.value();
   }
   
   // pragma MARK: std::optional<bool>
@@ -92,7 +92,7 @@ namespace margelo::nitro::rnstroketext::bridge::swift {
     return optional.has_value();
   }
   inline bool get_std__optional_bool_(const std::optional<bool>& optional) noexcept {
-    return *optional;
+    return optional.value();
   }
   
   // pragma MARK: std::shared_ptr<HybridMatiksStrokeTextSpec>

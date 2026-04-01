@@ -137,20 +137,6 @@ namespace margelo::nitro::rnstroketext::views {
       }
     }()) { }
 
-  HybridMatiksStrokeTextProps::HybridMatiksStrokeTextProps(const HybridMatiksStrokeTextProps& other):
-    react::ViewProps(),
-    width(other.width),
-    text(other.text),
-    fontSize(other.fontSize),
-    color(other.color),
-    strokeColor(other.strokeColor),
-    strokeWidth(other.strokeWidth),
-    fontFamily(other.fontFamily),
-    align(other.align),
-    numberOfLines(other.numberOfLines),
-    ellipsis(other.ellipsis),
-    hybridRef(other.hybridRef) { }
-
   bool HybridMatiksStrokeTextProps::filterObjectKeys(const std::string& propName) {
     switch (hashString(propName)) {
       case hashString("width"): return true;
@@ -185,10 +171,10 @@ namespace margelo::nitro::rnstroketext::views {
   void HybridMatiksStrokeTextComponentDescriptor::adopt(react::ShadowNode& shadowNode) const {
     // This is called immediately after `ShadowNode` is created, cloned or in progress.
     // On Android, we need to wrap props in our state, which gets routed through Java and later unwrapped in JNI/C++.
-    auto& concreteShadowNode = dynamic_cast<HybridMatiksStrokeTextShadowNode&>(shadowNode);
-    const HybridMatiksStrokeTextProps& props = concreteShadowNode.getConcreteProps();
-    HybridMatiksStrokeTextState state;
-    state.setProps(props);
+    auto& concreteShadowNode = static_cast<HybridMatiksStrokeTextShadowNode&>(shadowNode);
+    const std::shared_ptr<const HybridMatiksStrokeTextProps>& constProps = concreteShadowNode.getConcreteSharedProps();
+    const std::shared_ptr<HybridMatiksStrokeTextProps>& props = std::const_pointer_cast<HybridMatiksStrokeTextProps>(constProps);
+    HybridMatiksStrokeTextState state{props};
     concreteShadowNode.setStateData(std::move(state));
   }
 #endif

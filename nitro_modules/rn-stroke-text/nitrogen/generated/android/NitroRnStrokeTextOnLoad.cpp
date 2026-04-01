@@ -22,25 +22,35 @@
 namespace margelo::nitro::rnstroketext {
 
 int initialize(JavaVM* vm) {
+  return facebook::jni::initialize(vm, []() {
+    ::margelo::nitro::rnstroketext::registerAllNatives();
+  });
+}
+
+struct JHybridMatiksStrokeTextSpecImpl: public jni::JavaClass<JHybridMatiksStrokeTextSpecImpl, JHybridMatiksStrokeTextSpec::JavaPart> {
+  static auto constexpr kJavaDescriptor = "Lcom/margelo/nitro/rnstroketext/HybridMatiksStrokeText;";
+  static std::shared_ptr<JHybridMatiksStrokeTextSpec> create() {
+    static auto constructorFn = javaClassStatic()->getConstructor<JHybridMatiksStrokeTextSpecImpl::javaobject()>();
+    jni::local_ref<JHybridMatiksStrokeTextSpec::JavaPart> javaPart = javaClassStatic()->newObject(constructorFn);
+    return javaPart->getJHybridMatiksStrokeTextSpec();
+  }
+};
+
+void registerAllNatives() {
   using namespace margelo::nitro;
   using namespace margelo::nitro::rnstroketext;
-  using namespace facebook;
 
-  return facebook::jni::initialize(vm, [] {
-    // Register native JNI methods
-    margelo::nitro::rnstroketext::JHybridMatiksStrokeTextSpec::registerNatives();
-    margelo::nitro::rnstroketext::views::JHybridMatiksStrokeTextStateUpdater::registerNatives();
+  // Register native JNI methods
+  margelo::nitro::rnstroketext::JHybridMatiksStrokeTextSpec::CxxPart::registerNatives();
+  margelo::nitro::rnstroketext::views::JHybridMatiksStrokeTextStateUpdater::registerNatives();
 
-    // Register Nitro Hybrid Objects
-    HybridObjectRegistry::registerHybridObjectConstructor(
-      "MatiksStrokeText",
-      []() -> std::shared_ptr<HybridObject> {
-        static DefaultConstructableObject<JHybridMatiksStrokeTextSpec::javaobject> object("com/margelo/nitro/rnstroketext/HybridMatiksStrokeText");
-        auto instance = object.create();
-        return instance->cthis()->shared();
-      }
-    );
-  });
+  // Register Nitro Hybrid Objects
+  HybridObjectRegistry::registerHybridObjectConstructor(
+    "MatiksStrokeText",
+    []() -> std::shared_ptr<HybridObject> {
+      return JHybridMatiksStrokeTextSpecImpl::create();
+    }
+  );
 }
 
 } // namespace margelo::nitro::rnstroketext

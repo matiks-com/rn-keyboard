@@ -87,15 +87,6 @@ namespace margelo::nitro::rnkeyboard::views {
       }
     }()) { }
 
-  HybridMatiksKeyboardViewProps::HybridMatiksKeyboardViewProps(const HybridMatiksKeyboardViewProps& other):
-    react::ViewProps(),
-    customKeyboardType(other.customKeyboardType),
-    keyboardLayout(other.keyboardLayout),
-    onKeyInput(other.onKeyInput),
-    onDelete(other.onDelete),
-    hapticsEnabled(other.hapticsEnabled),
-    hybridRef(other.hybridRef) { }
-
   bool HybridMatiksKeyboardViewProps::filterObjectKeys(const std::string& propName) {
     switch (hashString(propName)) {
       case hashString("customKeyboardType"): return true;
@@ -125,10 +116,10 @@ namespace margelo::nitro::rnkeyboard::views {
   void HybridMatiksKeyboardViewComponentDescriptor::adopt(react::ShadowNode& shadowNode) const {
     // This is called immediately after `ShadowNode` is created, cloned or in progress.
     // On Android, we need to wrap props in our state, which gets routed through Java and later unwrapped in JNI/C++.
-    auto& concreteShadowNode = dynamic_cast<HybridMatiksKeyboardViewShadowNode&>(shadowNode);
-    const HybridMatiksKeyboardViewProps& props = concreteShadowNode.getConcreteProps();
-    HybridMatiksKeyboardViewState state;
-    state.setProps(props);
+    auto& concreteShadowNode = static_cast<HybridMatiksKeyboardViewShadowNode&>(shadowNode);
+    const std::shared_ptr<const HybridMatiksKeyboardViewProps>& constProps = concreteShadowNode.getConcreteSharedProps();
+    const std::shared_ptr<HybridMatiksKeyboardViewProps>& props = std::const_pointer_cast<HybridMatiksKeyboardViewProps>(constProps);
+    HybridMatiksKeyboardViewState state{props};
     concreteShadowNode.setStateData(std::move(state));
   }
 #endif

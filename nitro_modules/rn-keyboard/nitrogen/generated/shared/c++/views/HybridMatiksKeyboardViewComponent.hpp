@@ -40,7 +40,6 @@ namespace margelo::nitro::rnkeyboard::views {
   class HybridMatiksKeyboardViewProps final: public react::ViewProps {
   public:
     HybridMatiksKeyboardViewProps() = default;
-    HybridMatiksKeyboardViewProps(const HybridMatiksKeyboardViewProps&);
     HybridMatiksKeyboardViewProps(const react::PropsParserContext& context,
                                   const HybridMatiksKeyboardViewProps& sourceProps,
                                   const react::RawProps& rawProps);
@@ -63,10 +62,14 @@ namespace margelo::nitro::rnkeyboard::views {
   class HybridMatiksKeyboardViewState final {
   public:
     HybridMatiksKeyboardViewState() = default;
+    explicit HybridMatiksKeyboardViewState(const std::shared_ptr<HybridMatiksKeyboardViewProps>& props):
+      _props(props) {}
 
   public:
-    void setProps(const HybridMatiksKeyboardViewProps& props) { _props.emplace(props); }
-    const std::optional<HybridMatiksKeyboardViewProps>& getProps() const { return _props; }
+    [[nodiscard]]
+    const std::shared_ptr<HybridMatiksKeyboardViewProps>& getProps() const {
+      return _props;
+    }
 
   public:
 #ifdef ANDROID
@@ -80,7 +83,7 @@ namespace margelo::nitro::rnkeyboard::views {
 #endif
 
   private:
-    std::optional<HybridMatiksKeyboardViewProps> _props;
+    std::shared_ptr<HybridMatiksKeyboardViewProps> _props;
   };
 
   /**
@@ -96,7 +99,7 @@ namespace margelo::nitro::rnkeyboard::views {
    */
   class HybridMatiksKeyboardViewComponentDescriptor final: public react::ConcreteComponentDescriptor<HybridMatiksKeyboardViewShadowNode> {
   public:
-    HybridMatiksKeyboardViewComponentDescriptor(const react::ComponentDescriptorParameters& parameters);
+    explicit HybridMatiksKeyboardViewComponentDescriptor(const react::ComponentDescriptorParameters& parameters);
 
   public:
     /**

@@ -52,7 +52,7 @@ namespace margelo::nitro::rnkeyboard::bridge::swift {
     return optional.has_value();
   }
   inline KEYBOARD_TYPE get_std__optional_KEYBOARD_TYPE_(const std::optional<KEYBOARD_TYPE>& optional) noexcept {
-    return *optional;
+    return optional.value();
   }
   
   // pragma MARK: std::optional<KEYBOARD_LAYOUT>
@@ -67,7 +67,7 @@ namespace margelo::nitro::rnkeyboard::bridge::swift {
     return optional.has_value();
   }
   inline KEYBOARD_LAYOUT get_std__optional_KEYBOARD_LAYOUT_(const std::optional<KEYBOARD_LAYOUT>& optional) noexcept {
-    return *optional;
+    return optional.value();
   }
   
   // pragma MARK: std::function<void(const KeyInputEvent& /* event */)>
@@ -104,7 +104,7 @@ namespace margelo::nitro::rnkeyboard::bridge::swift {
     return optional.has_value();
   }
   inline std::function<void(const KeyInputEvent& /* event */)> get_std__optional_std__function_void_const_KeyInputEvent_____event______(const std::optional<std::function<void(const KeyInputEvent& /* event */)>>& optional) noexcept {
-    return *optional;
+    return optional.value();
   }
   
   // pragma MARK: std::function<void(const DeleteEvent& /* event */)>
@@ -141,7 +141,7 @@ namespace margelo::nitro::rnkeyboard::bridge::swift {
     return optional.has_value();
   }
   inline std::function<void(const DeleteEvent& /* event */)> get_std__optional_std__function_void_const_DeleteEvent_____event______(const std::optional<std::function<void(const DeleteEvent& /* event */)>>& optional) noexcept {
-    return *optional;
+    return optional.value();
   }
   
   // pragma MARK: std::optional<bool>
@@ -156,7 +156,7 @@ namespace margelo::nitro::rnkeyboard::bridge::swift {
     return optional.has_value();
   }
   inline bool get_std__optional_bool_(const std::optional<bool>& optional) noexcept {
-    return *optional;
+    return optional.value();
   }
   
   // pragma MARK: std::shared_ptr<HybridMatiksKeyboardViewSpec>

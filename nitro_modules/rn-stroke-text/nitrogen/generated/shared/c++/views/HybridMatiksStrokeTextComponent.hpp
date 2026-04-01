@@ -38,7 +38,6 @@ namespace margelo::nitro::rnstroketext::views {
   class HybridMatiksStrokeTextProps final: public react::ViewProps {
   public:
     HybridMatiksStrokeTextProps() = default;
-    HybridMatiksStrokeTextProps(const HybridMatiksStrokeTextProps&);
     HybridMatiksStrokeTextProps(const react::PropsParserContext& context,
                                 const HybridMatiksStrokeTextProps& sourceProps,
                                 const react::RawProps& rawProps);
@@ -66,10 +65,14 @@ namespace margelo::nitro::rnstroketext::views {
   class HybridMatiksStrokeTextState final {
   public:
     HybridMatiksStrokeTextState() = default;
+    explicit HybridMatiksStrokeTextState(const std::shared_ptr<HybridMatiksStrokeTextProps>& props):
+      _props(props) {}
 
   public:
-    void setProps(const HybridMatiksStrokeTextProps& props) { _props.emplace(props); }
-    const std::optional<HybridMatiksStrokeTextProps>& getProps() const { return _props; }
+    [[nodiscard]]
+    const std::shared_ptr<HybridMatiksStrokeTextProps>& getProps() const {
+      return _props;
+    }
 
   public:
 #ifdef ANDROID
@@ -83,7 +86,7 @@ namespace margelo::nitro::rnstroketext::views {
 #endif
 
   private:
-    std::optional<HybridMatiksStrokeTextProps> _props;
+    std::shared_ptr<HybridMatiksStrokeTextProps> _props;
   };
 
   /**
@@ -99,7 +102,7 @@ namespace margelo::nitro::rnstroketext::views {
    */
   class HybridMatiksStrokeTextComponentDescriptor final: public react::ConcreteComponentDescriptor<HybridMatiksStrokeTextShadowNode> {
   public:
-    HybridMatiksStrokeTextComponentDescriptor(const react::ComponentDescriptorParameters& parameters);
+    explicit HybridMatiksStrokeTextComponentDescriptor(const react::ComponentDescriptorParameters& parameters);
 
   public:
     /**

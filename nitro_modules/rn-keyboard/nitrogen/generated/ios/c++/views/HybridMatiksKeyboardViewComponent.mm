@@ -41,11 +41,6 @@ using namespace margelo::nitro::rnkeyboard::views;
   return react::concreteComponentDescriptorProvider<HybridMatiksKeyboardViewComponentDescriptor>();
 }
 
-+ (BOOL)shouldBeRecycled {
-  // TODO: Recycling should be controllable by the user. WIP, but disabled for now.
-  return NO;
-}
-
 - (instancetype) init {
   if (self = [super init]) {
     std::shared_ptr<HybridMatiksKeyboardViewSpec> hybridView = NitroRnKeyboard::NitroRnKeyboardAutolinking::createMatiksKeyboardView();
@@ -117,6 +112,16 @@ using namespace margelo::nitro::rnkeyboard::views;
 
   // 4. Continue in base class
   [super updateProps:props oldProps:oldProps];
+}
+
++ (BOOL)shouldBeRecycled {
+  return NitroRnKeyboard::NitroRnKeyboardAutolinking::isMatiksKeyboardViewRecyclable();
+}
+
+- (void)prepareForRecycle {
+  [super prepareForRecycle];
+  NitroRnKeyboard::HybridMatiksKeyboardViewSpec_cxx& swiftPart = _hybridView->getSwiftPart();
+  swiftPart.maybePrepareForRecycle();
 }
 
 @end

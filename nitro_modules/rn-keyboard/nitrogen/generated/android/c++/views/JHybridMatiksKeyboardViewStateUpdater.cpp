@@ -8,6 +8,7 @@
 #include "JHybridMatiksKeyboardViewStateUpdater.hpp"
 #include "views/HybridMatiksKeyboardViewComponent.hpp"
 #include <NitroModules/NitroDefines.hpp>
+#include <react/fabric/StateWrapperImpl.h>
 
 namespace margelo::nitro::rnkeyboard::views {
 
@@ -15,57 +16,56 @@ using namespace facebook;
 using ConcreteStateData = react::ConcreteState<HybridMatiksKeyboardViewState>;
 
 void JHybridMatiksKeyboardViewStateUpdater::updateViewProps(jni::alias_ref<jni::JClass> /* class */,
-                                           jni::alias_ref<JHybridMatiksKeyboardViewSpec::javaobject> javaView,
+                                           jni::alias_ref<JHybridMatiksKeyboardViewSpec::JavaPart> javaView,
                                            jni::alias_ref<JStateWrapper::javaobject> stateWrapperInterface) {
-  JHybridMatiksKeyboardViewSpec* view = javaView->cthis();
+  std::shared_ptr<JHybridMatiksKeyboardViewSpec> hybridView = javaView->getJHybridMatiksKeyboardViewSpec();
 
   // Get concrete StateWrapperImpl from passed StateWrapper interface object
   jobject rawStateWrapper = stateWrapperInterface.get();
-  if (!stateWrapperInterface->isInstanceOf(react::StateWrapperImpl::javaClassStatic())) {
+  if (!stateWrapperInterface->isInstanceOf(react::StateWrapperImpl::javaClassStatic())) [[unlikely]] {
       throw std::runtime_error("StateWrapper is not a StateWrapperImpl");
   }
   auto stateWrapper = jni::alias_ref<react::StateWrapperImpl::javaobject>{
             static_cast<react::StateWrapperImpl::javaobject>(rawStateWrapper)};
-
   std::shared_ptr<const react::State> state = stateWrapper->cthis()->getState();
-  auto concreteState = std::dynamic_pointer_cast<const ConcreteStateData>(state);
+  auto concreteState = std::static_pointer_cast<const ConcreteStateData>(state);
   const HybridMatiksKeyboardViewState& data = concreteState->getData();
-  const std::optional<HybridMatiksKeyboardViewProps>& maybeProps = data.getProps();
-  if (!maybeProps.has_value()) {
+  const std::shared_ptr<HybridMatiksKeyboardViewProps>& props = data.getProps();
+  if (props == nullptr) [[unlikely]] {
     // Props aren't set yet!
     throw std::runtime_error("HybridMatiksKeyboardViewState's data doesn't contain any props!");
   }
-  const HybridMatiksKeyboardViewProps& props = maybeProps.value();
-  if (props.customKeyboardType.isDirty) {
-    view->setCustomKeyboardType(props.customKeyboardType.value);
-    // TODO: Set isDirty = false
+
+  // Update all props if they are dirty
+  if (props->customKeyboardType.isDirty) {
+    hybridView->setCustomKeyboardType(props->customKeyboardType.value);
+    props->customKeyboardType.isDirty = false;
   }
-  if (props.keyboardLayout.isDirty) {
-    view->setKeyboardLayout(props.keyboardLayout.value);
-    // TODO: Set isDirty = false
+  if (props->keyboardLayout.isDirty) {
+    hybridView->setKeyboardLayout(props->keyboardLayout.value);
+    props->keyboardLayout.isDirty = false;
   }
-  if (props.onKeyInput.isDirty) {
-    view->setOnKeyInput(props.onKeyInput.value);
-    // TODO: Set isDirty = false
+  if (props->onKeyInput.isDirty) {
+    hybridView->setOnKeyInput(props->onKeyInput.value);
+    props->onKeyInput.isDirty = false;
   }
-  if (props.onDelete.isDirty) {
-    view->setOnDelete(props.onDelete.value);
-    // TODO: Set isDirty = false
+  if (props->onDelete.isDirty) {
+    hybridView->setOnDelete(props->onDelete.value);
+    props->onDelete.isDirty = false;
   }
-  if (props.hapticsEnabled.isDirty) {
-    view->setHapticsEnabled(props.hapticsEnabled.value);
-    // TODO: Set isDirty = false
+  if (props->hapticsEnabled.isDirty) {
+    hybridView->setHapticsEnabled(props->hapticsEnabled.value);
+    props->hapticsEnabled.isDirty = false;
   }
 
   // Update hybridRef if it changed
-  if (props.hybridRef.isDirty) {
+  if (props->hybridRef.isDirty) {
     // hybridRef changed - call it with new this
-    const auto& maybeFunc = props.hybridRef.value;
+    const auto& maybeFunc = props->hybridRef.value;
     if (maybeFunc.has_value()) {
-      std::shared_ptr<JHybridMatiksKeyboardViewSpec> shared = javaView->cthis()->shared_cast<JHybridMatiksKeyboardViewSpec>();
-      maybeFunc.value()(shared);
+      maybeFunc.value()(hybridView);
     }
-    // TODO: Set isDirty = false
+    props->hybridRef.isDirty = false;
   }
 }
 

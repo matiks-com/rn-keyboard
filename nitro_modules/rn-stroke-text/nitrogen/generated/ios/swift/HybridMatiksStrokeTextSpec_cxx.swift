@@ -5,7 +5,6 @@
 /// Copyright © Marc Rousavy @ Margelo
 ///
 
-import Foundation
 import NitroModules
 
 /**
@@ -135,7 +134,14 @@ open class HybridMatiksStrokeTextSpec_cxx {
     }
     @inline(__always)
     set {
-      self.__implementation.width = newValue.value
+      self.__implementation.width = { () -> Double? in
+        if bridge.has_value_std__optional_double_(newValue) {
+          let __unwrapped = bridge.get_std__optional_double_(newValue)
+          return __unwrapped
+        } else {
+          return nil
+        }
+      }()
     }
   }
   
@@ -163,7 +169,14 @@ open class HybridMatiksStrokeTextSpec_cxx {
     }
     @inline(__always)
     set {
-      self.__implementation.fontSize = newValue.value
+      self.__implementation.fontSize = { () -> Double? in
+        if bridge.has_value_std__optional_double_(newValue) {
+          let __unwrapped = bridge.get_std__optional_double_(newValue)
+          return __unwrapped
+        } else {
+          return nil
+        }
+      }()
     }
   }
   
@@ -228,7 +241,14 @@ open class HybridMatiksStrokeTextSpec_cxx {
     }
     @inline(__always)
     set {
-      self.__implementation.strokeWidth = newValue.value
+      self.__implementation.strokeWidth = { () -> Double? in
+        if bridge.has_value_std__optional_double_(newValue) {
+          let __unwrapped = bridge.get_std__optional_double_(newValue)
+          return __unwrapped
+        } else {
+          return nil
+        }
+      }()
     }
   }
   
@@ -286,7 +306,14 @@ open class HybridMatiksStrokeTextSpec_cxx {
     }
     @inline(__always)
     set {
-      self.__implementation.numberOfLines = newValue.value
+      self.__implementation.numberOfLines = { () -> Double? in
+        if bridge.has_value_std__optional_double_(newValue) {
+          let __unwrapped = bridge.get_std__optional_double_(newValue)
+          return __unwrapped
+        } else {
+          return nil
+        }
+      }()
     }
   }
   
@@ -337,5 +364,10 @@ open class HybridMatiksStrokeTextSpec_cxx {
   
   public final func afterUpdate() {
     __implementation.afterUpdate()
+  }
+  
+  public final func maybePrepareForRecycle() {
+    guard let recyclable = __implementation as? any RecyclableView else { return }
+    recyclable.prepareForRecycle()
   }
 }

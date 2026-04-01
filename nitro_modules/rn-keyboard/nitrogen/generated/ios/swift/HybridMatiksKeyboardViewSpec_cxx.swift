@@ -5,7 +5,6 @@
 /// Copyright © Marc Rousavy @ Margelo
 ///
 
-import Foundation
 import NitroModules
 
 /**
@@ -255,5 +254,10 @@ open class HybridMatiksKeyboardViewSpec_cxx {
   
   public final func afterUpdate() {
     __implementation.afterUpdate()
+  }
+  
+  public final func maybePrepareForRecycle() {
+    guard let recyclable = __implementation as? any RecyclableView else { return }
+    recyclable.prepareForRecycle()
   }
 }

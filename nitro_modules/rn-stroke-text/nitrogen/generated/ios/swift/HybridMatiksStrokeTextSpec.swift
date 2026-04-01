@@ -5,7 +5,6 @@
 /// Copyright © Marc Rousavy @ Margelo
 ///
 
-import Foundation
 import NitroModules
 
 /// See ``HybridMatiksStrokeTextSpec``
@@ -39,14 +38,14 @@ open class HybridMatiksStrokeTextSpec_base {
   public init() { }
   public func getCxxWrapper() -> HybridMatiksStrokeTextSpec_cxx {
   #if DEBUG
-    guard self is HybridMatiksStrokeTextSpec else {
+    guard self is any HybridMatiksStrokeTextSpec else {
       fatalError("`self` is not a `HybridMatiksStrokeTextSpec`! Did you accidentally inherit from `HybridMatiksStrokeTextSpec_base` instead of `HybridMatiksStrokeTextSpec`?")
     }
   #endif
     if let cxxWrapper = self.cxxWrapper {
       return cxxWrapper
     } else {
-      let cxxWrapper = HybridMatiksStrokeTextSpec_cxx(self as! HybridMatiksStrokeTextSpec)
+      let cxxWrapper = HybridMatiksStrokeTextSpec_cxx(self as! any HybridMatiksStrokeTextSpec)
       self.cxxWrapper = cxxWrapper
       return cxxWrapper
     }

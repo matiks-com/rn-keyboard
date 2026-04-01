@@ -41,11 +41,6 @@ using namespace margelo::nitro::rnstroketext::views;
   return react::concreteComponentDescriptorProvider<HybridMatiksStrokeTextComponentDescriptor>();
 }
 
-+ (BOOL)shouldBeRecycled {
-  // TODO: Recycling should be controllable by the user. WIP, but disabled for now.
-  return NO;
-}
-
 - (instancetype) init {
   if (self = [super init]) {
     std::shared_ptr<HybridMatiksStrokeTextSpec> hybridView = NitroRnStrokeText::NitroRnStrokeTextAutolinking::createMatiksStrokeText();
@@ -142,6 +137,16 @@ using namespace margelo::nitro::rnstroketext::views;
 
   // 4. Continue in base class
   [super updateProps:props oldProps:oldProps];
+}
+
++ (BOOL)shouldBeRecycled {
+  return NitroRnStrokeText::NitroRnStrokeTextAutolinking::isMatiksStrokeTextRecyclable();
+}
+
+- (void)prepareForRecycle {
+  [super prepareForRecycle];
+  NitroRnStrokeText::HybridMatiksStrokeTextSpec_cxx& swiftPart = _hybridView->getSwiftPart();
+  swiftPart.maybePrepareForRecycle();
 }
 
 @end

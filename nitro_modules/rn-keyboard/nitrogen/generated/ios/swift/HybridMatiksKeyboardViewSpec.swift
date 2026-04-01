@@ -5,7 +5,6 @@
 /// Copyright © Marc Rousavy @ Margelo
 ///
 
-import Foundation
 import NitroModules
 
 /// See ``HybridMatiksKeyboardViewSpec``
@@ -34,14 +33,14 @@ open class HybridMatiksKeyboardViewSpec_base {
   public init() { }
   public func getCxxWrapper() -> HybridMatiksKeyboardViewSpec_cxx {
   #if DEBUG
-    guard self is HybridMatiksKeyboardViewSpec else {
+    guard self is any HybridMatiksKeyboardViewSpec else {
       fatalError("`self` is not a `HybridMatiksKeyboardViewSpec`! Did you accidentally inherit from `HybridMatiksKeyboardViewSpec_base` instead of `HybridMatiksKeyboardViewSpec`?")
     }
   #endif
     if let cxxWrapper = self.cxxWrapper {
       return cxxWrapper
     } else {
-      let cxxWrapper = HybridMatiksKeyboardViewSpec_cxx(self as! HybridMatiksKeyboardViewSpec)
+      let cxxWrapper = HybridMatiksKeyboardViewSpec_cxx(self as! any HybridMatiksKeyboardViewSpec)
       self.cxxWrapper = cxxWrapper
       return cxxWrapper
     }

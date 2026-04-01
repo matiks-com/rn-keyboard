@@ -8,6 +8,7 @@
 #include "JHybridMatiksStrokeTextStateUpdater.hpp"
 #include "views/HybridMatiksStrokeTextComponent.hpp"
 #include <NitroModules/NitroDefines.hpp>
+#include <react/fabric/StateWrapperImpl.h>
 
 namespace margelo::nitro::rnstroketext::views {
 
@@ -15,77 +16,76 @@ using namespace facebook;
 using ConcreteStateData = react::ConcreteState<HybridMatiksStrokeTextState>;
 
 void JHybridMatiksStrokeTextStateUpdater::updateViewProps(jni::alias_ref<jni::JClass> /* class */,
-                                           jni::alias_ref<JHybridMatiksStrokeTextSpec::javaobject> javaView,
+                                           jni::alias_ref<JHybridMatiksStrokeTextSpec::JavaPart> javaView,
                                            jni::alias_ref<JStateWrapper::javaobject> stateWrapperInterface) {
-  JHybridMatiksStrokeTextSpec* view = javaView->cthis();
+  std::shared_ptr<JHybridMatiksStrokeTextSpec> hybridView = javaView->getJHybridMatiksStrokeTextSpec();
 
   // Get concrete StateWrapperImpl from passed StateWrapper interface object
   jobject rawStateWrapper = stateWrapperInterface.get();
-  if (!stateWrapperInterface->isInstanceOf(react::StateWrapperImpl::javaClassStatic())) {
+  if (!stateWrapperInterface->isInstanceOf(react::StateWrapperImpl::javaClassStatic())) [[unlikely]] {
       throw std::runtime_error("StateWrapper is not a StateWrapperImpl");
   }
   auto stateWrapper = jni::alias_ref<react::StateWrapperImpl::javaobject>{
             static_cast<react::StateWrapperImpl::javaobject>(rawStateWrapper)};
-
   std::shared_ptr<const react::State> state = stateWrapper->cthis()->getState();
-  auto concreteState = std::dynamic_pointer_cast<const ConcreteStateData>(state);
+  auto concreteState = std::static_pointer_cast<const ConcreteStateData>(state);
   const HybridMatiksStrokeTextState& data = concreteState->getData();
-  const std::optional<HybridMatiksStrokeTextProps>& maybeProps = data.getProps();
-  if (!maybeProps.has_value()) {
+  const std::shared_ptr<HybridMatiksStrokeTextProps>& props = data.getProps();
+  if (props == nullptr) [[unlikely]] {
     // Props aren't set yet!
     throw std::runtime_error("HybridMatiksStrokeTextState's data doesn't contain any props!");
   }
-  const HybridMatiksStrokeTextProps& props = maybeProps.value();
-  if (props.width.isDirty) {
-    view->setWidth(props.width.value);
-    // TODO: Set isDirty = false
+
+  // Update all props if they are dirty
+  if (props->width.isDirty) {
+    hybridView->setWidth(props->width.value);
+    props->width.isDirty = false;
   }
-  if (props.text.isDirty) {
-    view->setText(props.text.value);
-    // TODO: Set isDirty = false
+  if (props->text.isDirty) {
+    hybridView->setText(props->text.value);
+    props->text.isDirty = false;
   }
-  if (props.fontSize.isDirty) {
-    view->setFontSize(props.fontSize.value);
-    // TODO: Set isDirty = false
+  if (props->fontSize.isDirty) {
+    hybridView->setFontSize(props->fontSize.value);
+    props->fontSize.isDirty = false;
   }
-  if (props.color.isDirty) {
-    view->setColor(props.color.value);
-    // TODO: Set isDirty = false
+  if (props->color.isDirty) {
+    hybridView->setColor(props->color.value);
+    props->color.isDirty = false;
   }
-  if (props.strokeColor.isDirty) {
-    view->setStrokeColor(props.strokeColor.value);
-    // TODO: Set isDirty = false
+  if (props->strokeColor.isDirty) {
+    hybridView->setStrokeColor(props->strokeColor.value);
+    props->strokeColor.isDirty = false;
   }
-  if (props.strokeWidth.isDirty) {
-    view->setStrokeWidth(props.strokeWidth.value);
-    // TODO: Set isDirty = false
+  if (props->strokeWidth.isDirty) {
+    hybridView->setStrokeWidth(props->strokeWidth.value);
+    props->strokeWidth.isDirty = false;
   }
-  if (props.fontFamily.isDirty) {
-    view->setFontFamily(props.fontFamily.value);
-    // TODO: Set isDirty = false
+  if (props->fontFamily.isDirty) {
+    hybridView->setFontFamily(props->fontFamily.value);
+    props->fontFamily.isDirty = false;
   }
-  if (props.align.isDirty) {
-    view->setAlign(props.align.value);
-    // TODO: Set isDirty = false
+  if (props->align.isDirty) {
+    hybridView->setAlign(props->align.value);
+    props->align.isDirty = false;
   }
-  if (props.numberOfLines.isDirty) {
-    view->setNumberOfLines(props.numberOfLines.value);
-    // TODO: Set isDirty = false
+  if (props->numberOfLines.isDirty) {
+    hybridView->setNumberOfLines(props->numberOfLines.value);
+    props->numberOfLines.isDirty = false;
   }
-  if (props.ellipsis.isDirty) {
-    view->setEllipsis(props.ellipsis.value);
-    // TODO: Set isDirty = false
+  if (props->ellipsis.isDirty) {
+    hybridView->setEllipsis(props->ellipsis.value);
+    props->ellipsis.isDirty = false;
   }
 
   // Update hybridRef if it changed
-  if (props.hybridRef.isDirty) {
+  if (props->hybridRef.isDirty) {
     // hybridRef changed - call it with new this
-    const auto& maybeFunc = props.hybridRef.value;
+    const auto& maybeFunc = props->hybridRef.value;
     if (maybeFunc.has_value()) {
-      std::shared_ptr<JHybridMatiksStrokeTextSpec> shared = javaView->cthis()->shared_cast<JHybridMatiksStrokeTextSpec>();
-      maybeFunc.value()(shared);
+      maybeFunc.value()(hybridView);
     }
-    // TODO: Set isDirty = false
+    props->hybridRef.isDirty = false;
   }
 }
 
