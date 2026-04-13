@@ -18,33 +18,34 @@ namespace margelo::nitro::rnkeyboard {
 
   using namespace facebook;
 
-  class JHybridMatiksKeyboardViewSpec: public virtual HybridMatiksKeyboardViewSpec, public virtual JHybridObject {
+  class JHybridMatiksKeyboardViewSpec: public jni::HybridClass<JHybridMatiksKeyboardViewSpec, JHybridObject>,
+                                       public virtual HybridMatiksKeyboardViewSpec {
   public:
-    struct JavaPart: public jni::JavaClass<JavaPart, JHybridObject::JavaPart> {
-      static auto constexpr kJavaDescriptor = "Lcom/margelo/nitro/rnkeyboard/HybridMatiksKeyboardViewSpec;";
-      std::shared_ptr<JHybridMatiksKeyboardViewSpec> getJHybridMatiksKeyboardViewSpec();
-    };
-    struct CxxPart: public jni::HybridClass<CxxPart, JHybridObject::CxxPart> {
-      static auto constexpr kJavaDescriptor = "Lcom/margelo/nitro/rnkeyboard/HybridMatiksKeyboardViewSpec$CxxPart;";
-      static jni::local_ref<jhybriddata> initHybrid(jni::alias_ref<jhybridobject> jThis);
-      static void registerNatives();
-      using HybridBase::HybridBase;
-    protected:
-      std::shared_ptr<JHybridObject> createHybridObject(const jni::local_ref<JHybridObject::JavaPart>& javaPart) override;
-    };
+    static auto constexpr kJavaDescriptor = "Lcom/margelo/nitro/rnkeyboard/HybridMatiksKeyboardViewSpec;";
+    static jni::local_ref<jhybriddata> initHybrid(jni::alias_ref<jhybridobject> jThis);
+    static void registerNatives();
+
+  protected:
+    // C++ constructor (called from Java via `initHybrid()`)
+    explicit JHybridMatiksKeyboardViewSpec(jni::alias_ref<jhybridobject> jThis) :
+      HybridObject(HybridMatiksKeyboardViewSpec::TAG),
+      HybridBase(jThis),
+      _javaPart(jni::make_global(jThis)) {}
 
   public:
-    explicit JHybridMatiksKeyboardViewSpec(const jni::local_ref<JHybridMatiksKeyboardViewSpec::JavaPart>& javaPart):
-      HybridObject(HybridMatiksKeyboardViewSpec::TAG),
-      JHybridObject(javaPart),
-      _javaPart(jni::make_global(javaPart)) {}
     ~JHybridMatiksKeyboardViewSpec() override {
       // Hermes GC can destroy JS objects on a non-JNI Thread.
       jni::ThreadScope::WithClassLoader([&] { _javaPart.reset(); });
     }
 
   public:
-    inline const jni::global_ref<JHybridMatiksKeyboardViewSpec::JavaPart>& getJavaPart() const noexcept {
+    size_t getExternalMemorySize() noexcept override;
+    bool equals(const std::shared_ptr<HybridObject>& other) override;
+    void dispose() noexcept override;
+    std::string toString() override;
+
+  public:
+    inline const jni::global_ref<JHybridMatiksKeyboardViewSpec::javaobject>& getJavaPart() const noexcept {
       return _javaPart;
     }
 
@@ -66,7 +67,9 @@ namespace margelo::nitro::rnkeyboard {
     
 
   private:
-    jni::global_ref<JHybridMatiksKeyboardViewSpec::JavaPart> _javaPart;
+    friend HybridBase;
+    using HybridBase::HybridBase;
+    jni::global_ref<JHybridMatiksKeyboardViewSpec::javaobject> _javaPart;
   };
 
 } // namespace margelo::nitro::rnkeyboard

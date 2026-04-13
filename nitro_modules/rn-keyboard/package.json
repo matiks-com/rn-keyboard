@@ -1,6 +1,6 @@
 {
   "name": "@matiks/rn-keyboard",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "rn-keyboard",
   "main": "lib/index",
   "module": "lib/index",
@@ -58,11 +58,11 @@
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",
-    "nitrogen": "*",
+    "nitrogen": "^0.33.9",
     "prettier": "^3.3.3",
     "react": "19.1.1",
     "react-native": "0.82.0",
-    "react-native-nitro-modules": "*",
+    "react-native-nitro-modules": "^0.33.2",
     "typescript": "^5.8.3"
   },
   "peerDependencies": {

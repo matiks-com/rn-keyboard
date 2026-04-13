@@ -24,37 +24,27 @@
 namespace margelo::nitro::rnkeyboard {
 
 int initialize(JavaVM* vm) {
-  return facebook::jni::initialize(vm, []() {
-    ::margelo::nitro::rnkeyboard::registerAllNatives();
-  });
-}
-
-struct JHybridMatiksKeyboardViewSpecImpl: public jni::JavaClass<JHybridMatiksKeyboardViewSpecImpl, JHybridMatiksKeyboardViewSpec::JavaPart> {
-  static auto constexpr kJavaDescriptor = "Lcom/margelo/nitro/rnkeyboard/HybridMatiksKeyboardView;";
-  static std::shared_ptr<JHybridMatiksKeyboardViewSpec> create() {
-    static auto constructorFn = javaClassStatic()->getConstructor<JHybridMatiksKeyboardViewSpecImpl::javaobject()>();
-    jni::local_ref<JHybridMatiksKeyboardViewSpec::JavaPart> javaPart = javaClassStatic()->newObject(constructorFn);
-    return javaPart->getJHybridMatiksKeyboardViewSpec();
-  }
-};
-
-void registerAllNatives() {
   using namespace margelo::nitro;
   using namespace margelo::nitro::rnkeyboard;
+  using namespace facebook;
 
-  // Register native JNI methods
-  margelo::nitro::rnkeyboard::JHybridMatiksKeyboardViewSpec::CxxPart::registerNatives();
-  margelo::nitro::rnkeyboard::JFunc_void_KeyInputEvent_cxx::registerNatives();
-  margelo::nitro::rnkeyboard::JFunc_void_DeleteEvent_cxx::registerNatives();
-  margelo::nitro::rnkeyboard::views::JHybridMatiksKeyboardViewStateUpdater::registerNatives();
+  return facebook::jni::initialize(vm, [] {
+    // Register native JNI methods
+    margelo::nitro::rnkeyboard::JHybridMatiksKeyboardViewSpec::registerNatives();
+    margelo::nitro::rnkeyboard::JFunc_void_KeyInputEvent_cxx::registerNatives();
+    margelo::nitro::rnkeyboard::JFunc_void_DeleteEvent_cxx::registerNatives();
+    margelo::nitro::rnkeyboard::views::JHybridMatiksKeyboardViewStateUpdater::registerNatives();
 
-  // Register Nitro Hybrid Objects
-  HybridObjectRegistry::registerHybridObjectConstructor(
-    "MatiksKeyboardView",
-    []() -> std::shared_ptr<HybridObject> {
-      return JHybridMatiksKeyboardViewSpecImpl::create();
-    }
-  );
+    // Register Nitro Hybrid Objects
+    HybridObjectRegistry::registerHybridObjectConstructor(
+      "MatiksKeyboardView",
+      []() -> std::shared_ptr<HybridObject> {
+        static DefaultConstructableObject<JHybridMatiksKeyboardViewSpec::javaobject> object("com/margelo/nitro/rnkeyboard/HybridMatiksKeyboardView");
+        auto instance = object.create();
+        return instance->cthis()->shared();
+      }
+    );
+  });
 }
 
 } // namespace margelo::nitro::rnkeyboard

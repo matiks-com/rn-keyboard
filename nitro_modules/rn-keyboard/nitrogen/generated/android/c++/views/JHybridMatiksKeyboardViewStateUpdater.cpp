@@ -16,9 +16,9 @@ using namespace facebook;
 using ConcreteStateData = react::ConcreteState<HybridMatiksKeyboardViewState>;
 
 void JHybridMatiksKeyboardViewStateUpdater::updateViewProps(jni::alias_ref<jni::JClass> /* class */,
-                                           jni::alias_ref<JHybridMatiksKeyboardViewSpec::JavaPart> javaView,
+                                           jni::alias_ref<JHybridMatiksKeyboardViewSpec::javaobject> javaView,
                                            jni::alias_ref<JStateWrapper::javaobject> stateWrapperInterface) {
-  std::shared_ptr<JHybridMatiksKeyboardViewSpec> hybridView = javaView->getJHybridMatiksKeyboardViewSpec();
+  JHybridMatiksKeyboardViewSpec* view = javaView->cthis();
 
   // Get concrete StateWrapperImpl from passed StateWrapper interface object
   jobject rawStateWrapper = stateWrapperInterface.get();
@@ -38,23 +38,23 @@ void JHybridMatiksKeyboardViewStateUpdater::updateViewProps(jni::alias_ref<jni::
 
   // Update all props if they are dirty
   if (props->customKeyboardType.isDirty) {
-    hybridView->setCustomKeyboardType(props->customKeyboardType.value);
+    view->setCustomKeyboardType(props->customKeyboardType.value);
     props->customKeyboardType.isDirty = false;
   }
   if (props->keyboardLayout.isDirty) {
-    hybridView->setKeyboardLayout(props->keyboardLayout.value);
+    view->setKeyboardLayout(props->keyboardLayout.value);
     props->keyboardLayout.isDirty = false;
   }
   if (props->onKeyInput.isDirty) {
-    hybridView->setOnKeyInput(props->onKeyInput.value);
+    view->setOnKeyInput(props->onKeyInput.value);
     props->onKeyInput.isDirty = false;
   }
   if (props->onDelete.isDirty) {
-    hybridView->setOnDelete(props->onDelete.value);
+    view->setOnDelete(props->onDelete.value);
     props->onDelete.isDirty = false;
   }
   if (props->hapticsEnabled.isDirty) {
-    hybridView->setHapticsEnabled(props->hapticsEnabled.value);
+    view->setHapticsEnabled(props->hapticsEnabled.value);
     props->hapticsEnabled.isDirty = false;
   }
 
@@ -63,7 +63,8 @@ void JHybridMatiksKeyboardViewStateUpdater::updateViewProps(jni::alias_ref<jni::
     // hybridRef changed - call it with new this
     const auto& maybeFunc = props->hybridRef.value;
     if (maybeFunc.has_value()) {
-      maybeFunc.value()(hybridView);
+      std::shared_ptr<JHybridMatiksKeyboardViewSpec> shared = javaView->cthis()->shared_cast<JHybridMatiksKeyboardViewSpec>();
+      maybeFunc.value()(shared);
     }
     props->hybridRef.isDirty = false;
   }

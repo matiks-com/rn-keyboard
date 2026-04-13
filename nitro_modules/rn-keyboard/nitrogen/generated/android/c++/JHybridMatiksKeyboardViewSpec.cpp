@@ -33,54 +33,60 @@ namespace margelo::nitro::rnkeyboard { struct DeleteEvent; }
 
 namespace margelo::nitro::rnkeyboard {
 
-  std::shared_ptr<JHybridMatiksKeyboardViewSpec> JHybridMatiksKeyboardViewSpec::JavaPart::getJHybridMatiksKeyboardViewSpec() {
-    auto hybridObject = JHybridObject::JavaPart::getJHybridObject();
-    auto castHybridObject = std::dynamic_pointer_cast<JHybridMatiksKeyboardViewSpec>(hybridObject);
-    if (castHybridObject == nullptr) [[unlikely]] {
-      throw std::runtime_error("Failed to downcast JHybridObject to JHybridMatiksKeyboardViewSpec!");
-    }
-    return castHybridObject;
-  }
-
-  jni::local_ref<JHybridMatiksKeyboardViewSpec::CxxPart::jhybriddata> JHybridMatiksKeyboardViewSpec::CxxPart::initHybrid(jni::alias_ref<jhybridobject> jThis) {
+  jni::local_ref<JHybridMatiksKeyboardViewSpec::jhybriddata> JHybridMatiksKeyboardViewSpec::initHybrid(jni::alias_ref<jhybridobject> jThis) {
     return makeCxxInstance(jThis);
   }
 
-  std::shared_ptr<JHybridObject> JHybridMatiksKeyboardViewSpec::CxxPart::createHybridObject(const jni::local_ref<JHybridObject::JavaPart>& javaPart) {
-    auto castJavaPart = jni::dynamic_ref_cast<JHybridMatiksKeyboardViewSpec::JavaPart>(javaPart);
-    if (castJavaPart == nullptr) [[unlikely]] {
-      throw std::runtime_error("Failed to cast JHybridObject::JavaPart to JHybridMatiksKeyboardViewSpec::JavaPart!");
-    }
-    return std::make_shared<JHybridMatiksKeyboardViewSpec>(castJavaPart);
+  void JHybridMatiksKeyboardViewSpec::registerNatives() {
+    registerHybrid({
+      makeNativeMethod("initHybrid", JHybridMatiksKeyboardViewSpec::initHybrid),
+    });
   }
 
-  void JHybridMatiksKeyboardViewSpec::CxxPart::registerNatives() {
-    registerHybrid({
-      makeNativeMethod("initHybrid", JHybridMatiksKeyboardViewSpec::CxxPart::initHybrid),
-    });
+  size_t JHybridMatiksKeyboardViewSpec::getExternalMemorySize() noexcept {
+    static const auto method = javaClassStatic()->getMethod<jlong()>("getMemorySize");
+    return method(_javaPart);
+  }
+
+  bool JHybridMatiksKeyboardViewSpec::equals(const std::shared_ptr<HybridObject>& other) {
+    if (auto otherCast = std::dynamic_pointer_cast<JHybridMatiksKeyboardViewSpec>(other)) {
+      return _javaPart == otherCast->_javaPart;
+    }
+    return false;
+  }
+
+  void JHybridMatiksKeyboardViewSpec::dispose() noexcept {
+    static const auto method = javaClassStatic()->getMethod<void()>("dispose");
+    method(_javaPart);
+  }
+
+  std::string JHybridMatiksKeyboardViewSpec::toString() {
+    static const auto method = javaClassStatic()->getMethod<jni::JString()>("toString");
+    auto javaString = method(_javaPart);
+    return javaString->toStdString();
   }
 
   // Properties
   std::optional<KEYBOARD_TYPE> JHybridMatiksKeyboardViewSpec::getCustomKeyboardType() {
-    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<JKEYBOARD_TYPE>()>("getCustomKeyboardType");
+    static const auto method = javaClassStatic()->getMethod<jni::local_ref<JKEYBOARD_TYPE>()>("getCustomKeyboardType");
     auto __result = method(_javaPart);
     return __result != nullptr ? std::make_optional(__result->toCpp()) : std::nullopt;
   }
   void JHybridMatiksKeyboardViewSpec::setCustomKeyboardType(std::optional<KEYBOARD_TYPE> customKeyboardType) {
-    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<JKEYBOARD_TYPE> /* customKeyboardType */)>("setCustomKeyboardType");
+    static const auto method = javaClassStatic()->getMethod<void(jni::alias_ref<JKEYBOARD_TYPE> /* customKeyboardType */)>("setCustomKeyboardType");
     method(_javaPart, customKeyboardType.has_value() ? JKEYBOARD_TYPE::fromCpp(customKeyboardType.value()) : nullptr);
   }
   std::optional<KEYBOARD_LAYOUT> JHybridMatiksKeyboardViewSpec::getKeyboardLayout() {
-    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<JKEYBOARD_LAYOUT>()>("getKeyboardLayout");
+    static const auto method = javaClassStatic()->getMethod<jni::local_ref<JKEYBOARD_LAYOUT>()>("getKeyboardLayout");
     auto __result = method(_javaPart);
     return __result != nullptr ? std::make_optional(__result->toCpp()) : std::nullopt;
   }
   void JHybridMatiksKeyboardViewSpec::setKeyboardLayout(std::optional<KEYBOARD_LAYOUT> keyboardLayout) {
-    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<JKEYBOARD_LAYOUT> /* keyboardLayout */)>("setKeyboardLayout");
+    static const auto method = javaClassStatic()->getMethod<void(jni::alias_ref<JKEYBOARD_LAYOUT> /* keyboardLayout */)>("setKeyboardLayout");
     method(_javaPart, keyboardLayout.has_value() ? JKEYBOARD_LAYOUT::fromCpp(keyboardLayout.value()) : nullptr);
   }
   std::optional<std::function<void(const KeyInputEvent& /* event */)>> JHybridMatiksKeyboardViewSpec::getOnKeyInput() {
-    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<JFunc_void_KeyInputEvent::javaobject>()>("getOnKeyInput_cxx");
+    static const auto method = javaClassStatic()->getMethod<jni::local_ref<JFunc_void_KeyInputEvent::javaobject>()>("getOnKeyInput_cxx");
     auto __result = method(_javaPart);
     return __result != nullptr ? std::make_optional([&]() -> std::function<void(const KeyInputEvent& /* event */)> {
       if (__result->isInstanceOf(JFunc_void_KeyInputEvent_cxx::javaClassStatic())) [[likely]] {
@@ -93,11 +99,11 @@ namespace margelo::nitro::rnkeyboard {
     }()) : std::nullopt;
   }
   void JHybridMatiksKeyboardViewSpec::setOnKeyInput(const std::optional<std::function<void(const KeyInputEvent& /* event */)>>& onKeyInput) {
-    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<JFunc_void_KeyInputEvent::javaobject> /* onKeyInput */)>("setOnKeyInput_cxx");
+    static const auto method = javaClassStatic()->getMethod<void(jni::alias_ref<JFunc_void_KeyInputEvent::javaobject> /* onKeyInput */)>("setOnKeyInput_cxx");
     method(_javaPart, onKeyInput.has_value() ? JFunc_void_KeyInputEvent_cxx::fromCpp(onKeyInput.value()) : nullptr);
   }
   std::optional<std::function<void(const DeleteEvent& /* event */)>> JHybridMatiksKeyboardViewSpec::getOnDelete() {
-    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<JFunc_void_DeleteEvent::javaobject>()>("getOnDelete_cxx");
+    static const auto method = javaClassStatic()->getMethod<jni::local_ref<JFunc_void_DeleteEvent::javaobject>()>("getOnDelete_cxx");
     auto __result = method(_javaPart);
     return __result != nullptr ? std::make_optional([&]() -> std::function<void(const DeleteEvent& /* event */)> {
       if (__result->isInstanceOf(JFunc_void_DeleteEvent_cxx::javaClassStatic())) [[likely]] {
@@ -110,16 +116,16 @@ namespace margelo::nitro::rnkeyboard {
     }()) : std::nullopt;
   }
   void JHybridMatiksKeyboardViewSpec::setOnDelete(const std::optional<std::function<void(const DeleteEvent& /* event */)>>& onDelete) {
-    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<JFunc_void_DeleteEvent::javaobject> /* onDelete */)>("setOnDelete_cxx");
+    static const auto method = javaClassStatic()->getMethod<void(jni::alias_ref<JFunc_void_DeleteEvent::javaobject> /* onDelete */)>("setOnDelete_cxx");
     method(_javaPart, onDelete.has_value() ? JFunc_void_DeleteEvent_cxx::fromCpp(onDelete.value()) : nullptr);
   }
   std::optional<bool> JHybridMatiksKeyboardViewSpec::getHapticsEnabled() {
-    static const auto method = _javaPart->javaClassStatic()->getMethod<jni::local_ref<jni::JBoolean>()>("getHapticsEnabled");
+    static const auto method = javaClassStatic()->getMethod<jni::local_ref<jni::JBoolean>()>("getHapticsEnabled");
     auto __result = method(_javaPart);
     return __result != nullptr ? std::make_optional(static_cast<bool>(__result->value())) : std::nullopt;
   }
   void JHybridMatiksKeyboardViewSpec::setHapticsEnabled(std::optional<bool> hapticsEnabled) {
-    static const auto method = _javaPart->javaClassStatic()->getMethod<void(jni::alias_ref<jni::JBoolean> /* hapticsEnabled */)>("setHapticsEnabled");
+    static const auto method = javaClassStatic()->getMethod<void(jni::alias_ref<jni::JBoolean> /* hapticsEnabled */)>("setHapticsEnabled");
     method(_javaPart, hapticsEnabled.has_value() ? jni::JBoolean::valueOf(hapticsEnabled.value()) : nullptr);
   }
 

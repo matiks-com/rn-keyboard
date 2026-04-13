@@ -6,29 +6,20 @@
 ///
 
 #include <jni.h>
-#include <functional>
 #include <NitroModules/NitroDefines.hpp>
 
 namespace margelo::nitro::rnkeyboard {
 
-  [[deprecated("Use registerNatives() instead.")]]
-  int initialize(JavaVM* vm);
-
   /**
-   * Register the native (C++) part of NitroRnKeyboard, and autolinks all Hybrid Objects.
-   * Call this in your `JNI_OnLoad` function (probably inside `cpp-adapter.cpp`),
-   * inside a `facebook::jni::initialize(vm, ...)` call.
+   * Initializes the native (C++) part of NitroRnKeyboard, and autolinks all Hybrid Objects.
+   * Call this in your `JNI_OnLoad` function (probably inside `cpp-adapter.cpp`).
    * Example:
    * ```cpp (cpp-adapter.cpp)
    * JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void*) {
-   *   return facebook::jni::initialize(vm, []() {
-   *     // register all NitroRnKeyboard HybridObjects
-   *     margelo::nitro::rnkeyboard::registerNatives();
-   *     // any other custom registrations go here.
-   *   });
+   *   return margelo::nitro::rnkeyboard::initialize(vm);
    * }
    * ```
    */
-  void registerAllNatives();
+  int initialize(JavaVM* vm);
 
 } // namespace margelo::nitro::rnkeyboard

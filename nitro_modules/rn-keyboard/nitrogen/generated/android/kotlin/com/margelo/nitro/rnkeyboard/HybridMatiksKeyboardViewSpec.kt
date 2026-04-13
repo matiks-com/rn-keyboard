@@ -10,7 +10,6 @@ package com.margelo.nitro.rnkeyboard
 import androidx.annotation.Keep
 import com.facebook.jni.HybridData
 import com.facebook.proguard.annotations.DoNotStrip
-import com.margelo.nitro.core.HybridObject
 import com.margelo.nitro.views.HybridView
 
 /**
@@ -25,6 +24,23 @@ import com.margelo.nitro.views.HybridView
   "LocalVariableName", "PropertyName", "PrivatePropertyName", "FunctionName"
 )
 abstract class HybridMatiksKeyboardViewSpec: HybridView() {
+  @DoNotStrip
+  private var mHybridData: HybridData = initHybrid()
+
+  init {
+    super.updateNative(mHybridData)
+  }
+
+  override fun updateNative(hybridData: HybridData) {
+    mHybridData = hybridData
+    super.updateNative(hybridData)
+  }
+
+  // Default implementation of `HybridObject.toString()`
+  override fun toString(): String {
+    return "[HybridObject MatiksKeyboardView]"
+  }
+
   // Properties
   @get:DoNotStrip
   @get:Keep
@@ -75,21 +91,7 @@ abstract class HybridMatiksKeyboardViewSpec: HybridView() {
   // Methods
   
 
-  // Default implementation of `HybridObject.toString()`
-  override fun toString(): String {
-    return "[HybridObject MatiksKeyboardView]"
-  }
-
-  // C++ backing class
-  @DoNotStrip
-  @Keep
-  protected open class CxxPart(javaPart: HybridMatiksKeyboardViewSpec): HybridObject.CxxPart(javaPart) {
-    // C++ JHybridMatiksKeyboardViewSpec::CxxPart::initHybrid(...)
-    external override fun initHybrid(): HybridData
-  }
-  override fun createCxxPart(): CxxPart {
-    return CxxPart(this)
-  }
+  private external fun initHybrid(): HybridData
 
   companion object {
     protected const val TAG = "HybridMatiksKeyboardViewSpec"
